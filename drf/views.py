@@ -9,13 +9,48 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from django.http import Http404
 # Create your views here.
 
+
+#using API classed based views(APIView)
 class peopleAPIView(APIView):
     def get(self, request):
         people = People.objects.all() #Queryset
         serializer = PeopleSerializer(people, many=True)
-        return Response(serializer.data)  
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = PeopleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_201_CREATED)       
+
+class detailAPIView(APIView):
+    #To get pk
+    def get_object(self, pk):
+        try:
+            return People.objects.get(pk=pk)
+        except People.DoesNotExist:
+            raise Http404
+    def get(self, request, pk):
+        people = self.get_object(pk) #Queryset
+        serializer = PeopleSerializer(people)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        people = self.get_object(pk)
+        serializer = PeopleSerializer(people, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, pk):
+        people = self.get_object(pk)
+        people.delete()
+        return HttpResponse(status=status.HTTP_204_NO_CONTENT) 
 
 @api_view(['GET', 'POST'])
 def people(request):
@@ -24,12 +59,11 @@ def people(request):
         serializer = PeopleSerializer(people, many=True)
         return Response(serializer.data)
     elif request.method=='POST':
-        data = JSONParser().parse(request)
-        serializer = PeopleSerializer(data=data)
+        serializer = PeopleSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse(serializer.errors, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def detail(request, pk):
@@ -38,8 +72,7 @@ def detail(request, pk):
         serializer = PeopleSerializer(people)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = PeopleSerializer(people, data=data)
+        serializer = PeopleSerializer(people, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
