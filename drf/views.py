@@ -52,6 +52,7 @@ class detailAPIView(APIView):
         people.delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT) 
 
+#using @api_view for function based views
 @api_view(['GET', 'POST'])
 def people(request):
     if request.method=='GET':
