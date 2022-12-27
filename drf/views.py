@@ -10,8 +10,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from django.http import Http404
+from rest_framework import generics
+from rest_framework import mixins
 # Create your views here.
 
+#using mixins & generic class based views
+class genericAPIview(generics.GenericAPIView, mixins.ListModelMixin)
 
 #using API classed based views(APIView)
 class peopleAPIView(APIView):
