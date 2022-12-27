@@ -15,7 +15,8 @@ from rest_framework import mixins
 # Create your views here.
 
 #using mixins & generic class based views
-class genericAPIview(generics.GenericAPIView, mixins.ListModelMixin)
+class genericAPIview(generics.GenericAPIView, mixins.ListModelMixin):
+    
 
 #using API classed based views(APIView)
 class peopleAPIView(APIView):
