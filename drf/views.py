@@ -15,9 +15,16 @@ from rest_framework import mixins
 # Create your views here.
 
 #using mixins & generic class based views
-class genericAPIview(generics.GenericAPIView, mixins.ListModelMixin):
-    
-
+class genericAPIview(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
+    seerializer_class = PeopleSerializer
+    queryset = People.objects.all()
+    lookup_field = 'id'
+    def get(self, request, id):
+        if id:
+            return self.retrieve(request)
+        return self.list(request)
+    def post(self, request):
+        
 #using API classed based views(APIView)
 class peopleAPIView(APIView):
     def get(self, request):
