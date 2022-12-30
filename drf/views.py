@@ -14,16 +14,16 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 #authentication, authentication classes, viewsets & Routers
 class peopleViewset(viewsets.GenericViewSet, mixins.ListModelMixin):
     serializer_class = PeopleSerializer
     queryset = People.objects.all()
-    auht
-
-
-
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
 
 #using mixins & generic class based views
 class genericAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.RetrieveModelMixin,mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
