@@ -12,7 +12,10 @@ from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework import viewsets
 # Create your views here.
+
+#authentication, authentication classes, viewsets & Routers
 
 
 #using mixins & generic class based views
