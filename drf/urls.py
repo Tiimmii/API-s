@@ -1,5 +1,9 @@
 from django.urls import path, include
-from .views import people, detail, peopleAPIView, detailAPIView, genericAPIView
+from .views import people, detail, peopleAPIView, detailAPIView, genericAPIView, peopleViewset
+from rest_framework import routers
+
+router = routers.SimpleRouter()
+routers.register('peopleViewset', peopleViewset.as_view())
 
 urlpatterns = [
     path('people/', people),
@@ -8,4 +12,7 @@ urlpatterns = [
     path('peopleAPIView/', peopleAPIView.as_view()),
     path('detailAPIView/<int:pk>/', detailAPIView.as_view()),
     path('genericAPIview/<int:id>/', genericAPIView.as_view()),
+    path('', include(router.urls())),
 ]
+
+# urlpatterns += router.urls
