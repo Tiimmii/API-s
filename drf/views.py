@@ -13,9 +13,16 @@ from django.http import Http404
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 # Create your views here.
 
 #authentication, authentication classes, viewsets & Routers
+class peopleViewset(viewsets.GenericViewSet, mixins.ListModelMixin):
+    serializer_class = PeopleSerializer
+    queryset = People.objects.all()
+    auht
+
+
 
 
 #using mixins & generic class based views
