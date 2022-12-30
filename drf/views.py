@@ -18,7 +18,7 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 #authentication, authentication classes, viewsets & Routers
-class peopleViewset(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.):
+class peopleViewset(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin):
     serializer_class = PeopleSerializer
     queryset = People.objects.all()
     authentication_classes = [SessionAuthentication, BasicAuthentication]
