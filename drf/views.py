@@ -18,13 +18,11 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 #authentication, authentication classes, viewsets & Routers
-class peopleViewset(viewsets.GenericViewSet, mixins.ListModelMixin):
+class peopleViewset(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.):
     serializer_class = PeopleSerializer
     queryset = People.objects.all()
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    
-
 #using mixins & generic class based views
 class genericAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.RetrieveModelMixin,mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     serializer_class = PeopleSerializer
