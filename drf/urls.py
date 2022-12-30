@@ -3,7 +3,7 @@ from .views import people, detail, peopleAPIView, detailAPIView, genericAPIView,
 from rest_framework import routers
 
 router = routers.SimpleRouter()
-routers.register('peopleViewset', peopleViewset.as_view())
+router.register('peopleViewset', peopleViewset, basename='people')
 
 urlpatterns = [
     path('people/', people),
@@ -12,7 +12,7 @@ urlpatterns = [
     path('peopleAPIView/', peopleAPIView.as_view()),
     path('detailAPIView/<int:pk>/', detailAPIView.as_view()),
     path('genericAPIview/<int:id>/', genericAPIView.as_view()),
-    path('', include(router.urls())),
+    path('', include(router.urls)),
 ]
 
 # urlpatterns += router.urls
