@@ -2,6 +2,7 @@ from django.urls import path, include
 from .views import people, detail, peopleAPIView, detailAPIView, genericAPIView, peopleViewset
 from rest_framework import routers
 
+
 router = routers.SimpleRouter()
 router.register('peopleViewset', peopleViewset, basename='people')
 
@@ -14,6 +15,7 @@ urlpatterns = [
     path('genericAPIview/<int:id>/', genericAPIView.as_view()),
     path('', include(router.urls)),
 ]
+
 
 #or add routers to path using:
 # urlpatterns += router.urls
