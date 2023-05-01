@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,6 +81,11 @@ WSGI_APPLICATION = 'restapi.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+DB_NAME = config("NAME")
+DB_USER = config("USER")
+DB_PASSWORD = config("PASSWORD")
+DB_HOST = config("HOST")
+DB_PORT = config("PORT")
 
 DATABASES = {
     # 'default': {
@@ -88,11 +94,11 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'testdb',
-        'USER': 'timmi',
-        'PASSWORD': 'timmi',
-        'HOST': '127.0.0.1',
-        'PORT': '5000',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
