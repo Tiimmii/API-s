@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'restapi.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-DB_NAME = config("NAME")
-DB_USER = config("USER")
-DB_PASSWORD = config("PASSWORD")
-DB_HOST = config("HOST")
-DB_PORT = config("PORT")
+DB_NAME = config("DB_NAME")
+DB_USER = config("DB_USER")
+DB_PASSWORD = config("DB_PASSWORD")
+DB_HOST = config("DB_HOST")
+DB_PORT = config("DB_PORT")
 
 DATABASES = {
     # 'default': {
