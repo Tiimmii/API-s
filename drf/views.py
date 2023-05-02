@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from .serializers import PeopleSerializer
 from django.http import JsonResponse
-from .models import People
+from .models import People, Blog
+from django_seed import Seed
 from rest_framework.parsers import JSONParser
 from django.http import HttpResponse 
 from django.views.decorators.csrf import csrf_exempt
@@ -16,6 +17,14 @@ from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 # Create your views here.
+
+seeder = Seed.seeder()
+seeder.add_entity(Blog, 20)
+
+def execute():
+    seeder.execute()
+    print("seeded successfully")
+
 
 #authentication, authentication classes, viewsets & Routers
 class peopleViewset(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin):
