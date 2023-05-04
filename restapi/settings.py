@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf',
     'customuser',
+    'gateway',
     'django_seed',
     'rest_framework',
     'debug_toolbar',
