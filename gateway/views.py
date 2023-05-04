@@ -1,17 +1,19 @@
 import jwt
 from django.shortcuts import render
 from .models import Jwt
+from customuser.models import Customuser
 from datetime import datetime, timedelta
 from django.conf import settings
 import random, string
 from rest_framework.views import APIView
-from .serializers import LoginSerializer
+from .serializers import LoginSerializer, RegisterSerializer
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 
 # Create your views here.
 def get_random(length):
-    ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+
 def get_access_token(payload):
     return jwt.encode(
         {"exp": datetime.now() + timedelta(minutes=5), **payload},
@@ -29,16 +31,26 @@ def get_refresh_token():
 class Loginview(APIView):
     serializer_class = LoginSerializer
     def post(self, request):
-        serializer = self.serializer_class
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         user = authenticate(username=serializer.validated_data['email'], password=serializer.validated_data['password'])
         if not user:
             return Response({"error": "Invalid email or password"}, status="400")
 
-        access = get_access_token({"user_id":user.id})
+        access = get_access_token({"user":user.id})
         refresh = get_refresh_token()
 
-        Jwt.objects.create(user = user.id, access_token = access, refresh_token= refresh)
+        Jwt.objects.create(user_id = user.id, access_token = access, refresh_token= refresh)
 
         return Response({"access_token":access, "refresh_token": refresh})
+    
+class Registerview(APIView):
+    serializer_class = RegisterSerializer
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        Customuser.objects.create_user(**serializer.validated_data)
+
+        return Response({"success": "user created."}, status=200)
