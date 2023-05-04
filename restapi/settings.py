@@ -79,6 +79,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'restapi.wsgi.application'
+AUTH_USER_MODEL = 'customuser.Customuser'
 
 
 # Database
