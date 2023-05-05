@@ -62,3 +62,7 @@ class Refreshview(APIView):
         active_jwt.save()
 
         return Response({"access_token":access_token, "refresh_token": refresh_token}, status="200")
+    
+class Getsecuredinfo(APIView):
+    def get(self, request):
+        return Response({"data": "this is a secured info"}, status="200")
