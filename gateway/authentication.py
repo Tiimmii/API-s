@@ -32,16 +32,15 @@ class Authentication(BaseAuthentication):
         data = self.validate_request(request.headers)
         if not data:
             return None, None
-        return self.get_user(data["user_id"])
-    
+        print(data["user"])
+        return self.get_user(data["user"]), None 
     def get_user(self, user_id):
         try:
-            user = Customuser.models.get(id=user_id)
+            user = Customuser.objects.get(id=user_id)
             return user
-        except:
+        except Exception:
             return None
-    
-    def validate_request(headers):
+    def validate_request(self, headers):
         authorization = headers.get("Authorization", None)
         if not authorization:
             raise Exception("You need to provide authorization")
