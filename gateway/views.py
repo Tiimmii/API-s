@@ -7,6 +7,7 @@ from .serializers import LoginSerializer, RegisterSerializer, RefreshSerializer
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from .authentication import Authentication, Get_token
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
@@ -63,13 +64,10 @@ class Refreshview(APIView):
 
         return Response({"access_token":access_token, "refresh_token": refresh_token}, status="200")
 
-def validate_request(headers):
-    authorization = headers.get("Authoriztion", None)
-    if not authorization:
-        raise Exception("You need to provide authorization")
-    token = headers["Authorization"][7:]
-
 class Getsecuredinfo(APIView):
+    authentication_classes = [Authentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
-        validate_request(request.headers)
+        print(request.user)
         return Response({"data": "this is a secured info"}, status="200")

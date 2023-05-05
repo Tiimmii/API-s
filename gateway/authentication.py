@@ -3,6 +3,8 @@ from django.conf import settings
 from datetime import datetime, timedelta
 import random
 import string
+from rest_framework.authentication import BaseAuthentication
+from customuser.models import Customuser
 
 
 def get_random(length):
@@ -25,7 +27,30 @@ class Get_token():
             algorithm="HS256"
         )
 
-class Authentication():
+class Authentication(BaseAuthentication):
+    def authenticate(self, request):
+        data = self.validate_request(request.headers)
+        if not data:
+            return None, None
+        return self.get_user(data["user_id"])
+    
+    def get_user(self, user_id):
+        try:
+            user = Customuser.models.get(id=user_id)
+            return user
+        except:
+            return None
+    
+    def validate_request(headers):
+        authorization = headers.get("Authorization", None)
+        if not authorization:
+            raise Exception("You need to provide authorization")
+        token = headers["Authorization"][7:]
+        decoded_data = Authentication.valid_token(token)
+        if not decoded_data:
+            raise Exception("Token not valid or expired")
+        return decoded_data
+
     @staticmethod
     def valid_token(token):
         try:
