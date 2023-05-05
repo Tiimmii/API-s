@@ -62,7 +62,14 @@ class Refreshview(APIView):
         active_jwt.save()
 
         return Response({"access_token":access_token, "refresh_token": refresh_token}, status="200")
-    
+
+def validate_request(headers):
+    authorization = headers.get("Authoriztion", None)
+    if not authorization:
+        raise Exception("You need to provide authorization")
+    token = headers["Authorization"][7:]
+
 class Getsecuredinfo(APIView):
     def get(self, request):
+        validate_request(request.headers)
         return Response({"data": "this is a secured info"}, status="200")
