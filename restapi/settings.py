@@ -148,5 +148,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ("gateway.authentication.Authentication",)
+    "DEFAULT_AUTHENTICATION_CLASSES": ("gateway.authentication.Authentication",),
+    "EXCEPTION_HANDLER": "gateway.exception_handler.cus_exception_handler",
 }
