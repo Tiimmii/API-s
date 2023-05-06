@@ -22,6 +22,7 @@ urlpatterns = [
     path('', include('drf.urls')),
     path('gateway/', include('gateway.urls')),
     path('api-auth/', include('rest_framework.urls')),
+    path('user/', include('customuser.urls')),
 ]
 
 if settings.DEBUG:

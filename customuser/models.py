@@ -42,3 +42,8 @@ class Customuser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class Customuserprofile(models.Model):
+    user = models.ForeignKey(Customuser, on_delete=models.CASCADE)
+    profile_pic = models.ImageField()
+    date = models.DateField()
