@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_seed',
     'rest_framework',
     'debug_toolbar',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -146,7 +147,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaClodinaryStorage"
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
