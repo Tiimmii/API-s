@@ -65,6 +65,7 @@ class Refreshview(APIView):
         return Response({"access_token":access_token, "refresh_token": refresh_token}, status="200")
 
 class Getsecuredinfo(APIView):
+    authentication_classes = [Authentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):

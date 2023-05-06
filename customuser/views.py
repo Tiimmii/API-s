@@ -10,4 +10,4 @@ class Customuserview(ModelViewSet):
 
 class Profileview(ModelViewSet):
     serializer_class = UserprofileSerializer
-    queryset = Customuser.objects.all()
+    queryset = Customuserprofile.objects.all()
