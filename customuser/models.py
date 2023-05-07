@@ -42,8 +42,21 @@ class Customuser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+class Address_global(models.Model):
+    address = models.TextField()
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.address
 
 class Customuserprofile(models.Model):
     user = models.OneToOneField(Customuser, on_delete=models.CASCADE, related_name="user_profile")
     profile_pic = models.ImageField(upload_to="profile_pics")
+    address = models.ForeignKey(Address_global, on_delete=models.SET_NULL, null=True, related_name="address_info")
     date = models.DateField()
+
+    def __str__(self):
+        return self.user.email
