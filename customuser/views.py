@@ -14,7 +14,7 @@ def execute():
 # Create your views here.
 class Customuserview(ModelViewSet):
     serializer_class = CustomuserSerializer
-    queryset = Customuser.objects.all()
+    queryset = Customuser.objects.prefetch_related("user_profile","user_profile__address")
 
 class Profileview(ModelViewSet):
     serializer_class = UserprofileSerializer
