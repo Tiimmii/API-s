@@ -18,4 +18,4 @@ class Customuserview(ModelViewSet):
 
 class Profileview(ModelViewSet):
     serializer_class = UserprofileSerializer
-    queryset = Customuserprofile.objects.all()
+    queryset = Customuserprofile.objects.select_related("user", "address")
