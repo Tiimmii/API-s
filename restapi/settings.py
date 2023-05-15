@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf',
     'customuser',
+    'event_controller',
     'gateway',
     'django_seed',
     'rest_framework',
