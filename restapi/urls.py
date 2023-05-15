@@ -25,6 +25,7 @@ urlpatterns = [
     path('gateway/', include('gateway.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('user/', include('customuser.urls')),
+    path('event/', include('event_controller.urls')),
 ]
 
 if settings.DEBUG:
