@@ -36,7 +36,7 @@ class Eventview(ModelViewSet):
                 Address_global.objects.filter(id=a_serializer.data["id"]).delete()
                 raise Exception("features must be an instance")
             data.append({
-                **items, "event_id": e_serializer.data["id"]
+                **items, "event": e_serializer.data["id"]
             })
         
         f_serializer = EventFeatureSerializer(data=data, many=True)
@@ -45,6 +45,6 @@ class Eventview(ModelViewSet):
             raise Exception(f_serializer.errors)
         f_serializer.save()
 
-        return Response(self.serializer_class(self.get_queryset().get(id=e_serializer.data["id"])), status="201")
+        return Response(e_serializer.data, status=201)
 
         
