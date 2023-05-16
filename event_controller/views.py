@@ -46,5 +46,32 @@ class Eventview(ModelViewSet):
         f_serializer.save()
 
         return Response(e_serializer.data, status=201)
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
 
-        
+        evt_serializer = self.serializer_class(data=request.data, instance=instance, partial=True)
+        evt_serializer.is_valid(raise_exception=True)
+        evt_serializer.save()
+
+        add_serializer = AddressSerailizer(data=request.data, instance=instance.address_info, partial=True)
+        add_serializer.is_valid(raise_exception=True)
+        add_serializer.save()
+
+        features = request.data.get("features", None)
+        if features:
+            if not isinstance(features, list):
+                features = [features]
+
+            data = []
+
+            for items in features:
+                if not isinstance(items, dict):
+                    raise Exception("features must be an instance")
+                data.append({
+                    **items, "event": evt_serializer.data["id"]
+                })
+            
+            f_serializer = EventFeatureSerializer(data=data, many=True)
+            f_serializer.is_valid(raise_exception=True)
+            f_serializer.save()
