@@ -15,36 +15,36 @@ class Eventview(ModelViewSet):
         a_serializer.is_valid(raise_exception=True)
         a_serializer.save()
 
-        data = {**request.data, "address_info_id":a_serializer["id"]}
+        data = {**request.data, "address_info_id":a_serializer.data["id"]}
         e_serializer = self.serializer_class(data=data)
         if not e_serializer.is_valid():
-            Address_global.objects.filter(id=e_serializer["address_info_id"]).delete()
+            Address_global.objects.filter(id=a_serializer.data["id"]).delete()
             raise Exception(e_serializer.errors)
         e_serializer.save()
 
         features = request.data.get("features", None)
         if not features:
-            Address_global.objects.filter(id=e_serializer["address_info_id"]).delete()
-            raise Exception(e_serializer.errors)
-        if not isinstance(list, features):
+            Address_global.objects.filter(id=a_serializer.data["id"]).delete()
+            raise Exception("feature field is required")
+        if not isinstance(features, list):
             features = [features]
 
         data = []
 
         for items in features:
-            if not isinstance(dict, items):
-                Address_global.objects.filter(id=e_serializer["address_info_id"]).delete()
-                raise Exception(e_serializer.errors)
+            if not isinstance(items, dict):
+                Address_global.objects.filter(id=a_serializer.data["id"]).delete()
+                raise Exception("features must be an instance")
             data.append({
-                **items, "event_main_id": e_serializer["id"]
+                **items, "event_id": e_serializer.data["id"]
             })
         
-        f_serializer = EventFeatureSerializer(data=data)
+        f_serializer = EventFeatureSerializer(data=data, many=True)
         if not f_serializer.is_valid():
-            Address_global.objects.filter(id=e_serializer["address_info_id"]).delete()
-            raise Exception(e_serializer.errors)
+            Address_global.objects.filter(id=a_serializer.data["id"]).delete()
+            raise Exception(f_serializer.errors)
         f_serializer.save()
 
-        return Response(self.serializer_class(self.get_queryset.get(e_serializer["id"])), status="201")
+        return Response(self.serializer_class(self.get_queryset().get(id=e_serializer.data["id"])), status="201")
 
         
