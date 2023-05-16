@@ -4,6 +4,7 @@ from .serializer import EventmainSerializer, EventFeatureSerializer
 from rest_framework.viewsets import ModelViewSet
 from customuser.serializer import AddressSerailizer
 from customuser.models import Address_global
+from rest_framework.response import Response
 # Create your views here.
 class Eventview(ModelViewSet):
     serializer_class = EventmainSerializer
@@ -22,6 +23,28 @@ class Eventview(ModelViewSet):
         e_serializer.save()
 
         features = request.data.get("features", None)
+        if not features:
+            Address_global.objects.filter(id=e_serializer["address_info_id"]).delete()
+            raise Exception(e_serializer.errors)
         if not isinstance(list, features):
             features = [features]
+
+        data = []
+
+        for items in features:
+            if not isinstance(dict, items):
+                Address_global.objects.filter(id=e_serializer["address_info_id"]).delete()
+                raise Exception(e_serializer.errors)
+            data.append({
+                **items, "event_main_id": e_serializer["id"]
+            })
+        
+        f_serializer = EventFeatureSerializer(data=data)
+        if not f_serializer.is_valid():
+            Address_global.objects.filter(id=e_serializer["address_info_id"]).delete()
+            raise Exception(e_serializer.errors)
+        f_serializer.save()
+
+        return Response(self.serializer_class(self.get_queryset.get(e_serializer["id"])), status="201")
+
         
